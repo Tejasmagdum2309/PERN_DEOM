@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:tejas@localhost:5432/PERN?schema=public"
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  categories   Category[]
+  subcategories Subcategory[]
+  products      Product[]
+}
+
+model Category {
+  id           String   @id @default(uuid())
+  categoryName String
+  imgUrl       String?
+  status       Boolean
+  sequence     Int
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  Subcategory  Subcategory[]
+  Product      Product[]
+}
+
+model Subcategory {
+  id              String   @id @default(uuid())
+  subcategoryName String
+  categoryId      String
+  imgUrl          String?
+  status          Boolean
+  sequence        Int
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  Category        Category  @relation(fields: [categoryId], references: [id])
+  Product         Product[]
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  productName  String
+  subcategoryId String
+  categoryId   String
+  status       Boolean
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  Subcategory  Subcategory @relation(fields: [subcategoryId], references: [id])
+  Category     Category    @relation(fields: [categoryId], references: [id])
+}
