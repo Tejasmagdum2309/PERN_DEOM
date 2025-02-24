@@ -65,10 +65,6 @@ app.get("/categories", authMiddleware, async (req, res) => {
   }
 });
 
-
-
-// add categorie 
-
 app.post("/categories", authMiddleware, async (req, res) => {
   try {
     const { categoryName, imgUrl, status, sequence } = req.body;
@@ -87,6 +83,98 @@ app.post("/categories", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.put("/categories/:id", async (req, res) => {
+  const { id } = req.params;
+  const { categoryName, sequence } = req.body;
+
+  try {
+    const updatedCategory = await prisma.category.update({
+      where: { id },
+      data: { categoryName, sequence: Number(sequence) },
+    });
+    res.json(updatedCategory);
+  } catch (error) {
+    console.error("Error updating category:", error);
+    res.status(500).json({ error: "Failed to update category" });
+  }
+});
+
+
+// Delete Category API
+app.delete("/categories/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedCategory = await prisma.category.delete({ where: { id } });
+    res.json({ message: "Category deleted successfully", deletedCategory });
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ error: "Failed to delete category" });
+  }
+});
+
+
+//  asdadasdssssssssssssssssssssssssssssssssssssssssss
+
+// Get all subcategories with category names
+app.get("/subcategories", async (req, res) => {
+  try {
+    const subcategories = await prisma.subcategory.findMany({
+      include: { Category: true },
+    });
+    res.json(subcategories);
+  } catch (error) {
+    console.error("Error fetching subcategories:", error);
+    res.status(500).json({ error: "Failed to fetch subcategories" });
+  }
+});
+
+// Get a single subcategory by ID
+app.get("/subcategories/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const subcategory = await prisma.subcategory.findUnique({
+      where: { id },
+      include: { Category: true },
+    });
+    res.json(subcategory);
+  } catch (error) {
+    console.error("Error fetching subcategory:", error);
+    res.status(500).json({ error: "Failed to fetch subcategory" });
+  }
+});
+
+// Update a subcategory
+app.put("/subcategories/:id", async (req, res) => {
+  const { id } = req.params;
+  const { subcategoryName, sequence } = req.body;
+
+  try {
+    const updatedSubcategory = await prisma.subcategory.update({
+      where: { id },
+      data: { subcategoryName, sequence: Number(sequence) },
+    });
+    res.json(updatedSubcategory);
+  } catch (error) {
+    console.error("Error updating subcategory:", error);
+    res.status(500).json({ error: "Failed to update subcategory" });
+  }
+});
+
+// Delete a subcategory
+app.delete("/subcategories/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await prisma.subcategory.delete({ where: { id } });
+    res.json({ message: "Subcategory deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting subcategory:", error);
+    res.status(500).json({ error: "Failed to delete subcategory" });
+  }
+});
+
 
 // // Create category
 // app.post('/categories', async (req, res) => {
