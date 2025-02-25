@@ -27,7 +27,7 @@ const Login = () => {
       if (response.data.token) {
         localStorage.setItem("token", response.data.token); // Store token
         toast.success("Login successful!");
-        navigate("/about"); // Redirect to dashboard after login
+        navigate("/dashboard"); // Redirect to dashboard after login
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

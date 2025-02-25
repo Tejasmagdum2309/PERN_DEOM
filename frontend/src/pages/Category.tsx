@@ -99,7 +99,7 @@ const CategoriesTable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Categories</h2>
+      <div className="flex justify-between mb-2 "><h2 className="text-xl font-bold mb-4">Categories</h2>  <button className="text-white cursor-pointer bg-[#662671] rounded-md px-4" onClick={() => navigate("/add-category")}>Add Categoty</button></div>
       <table className="min-w-full border-collapse border border-gray-300">
         <thead className="bg-[#FFF8B7]">
           {table.getHeaderGroups().map((headerGroup) => (

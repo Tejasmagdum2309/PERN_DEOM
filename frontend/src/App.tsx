@@ -13,6 +13,8 @@ import UpdateCategory from "./pages/UpdateCategory.tsx";
 import SubcategoriesTable from "./pages/SubCategory.tsx";
 import UpdateSubcategory from "./pages/UpdateSubCategory.tsx";
 import DashBoard from "./pages/DashBoard.tsx";
+import CreateCategory from "./pages/AddCategory.tsx";
+import CreateSubcategory from "./pages/AddSubCategory.tsx";
 function App() {
   return (
     <>
@@ -33,6 +35,9 @@ function App() {
               path="/update-subCategory/:id"
               element={<UpdateSubcategory />}
             />
+            <Route path="add-category" element={<CreateCategory/>} />
+            <Route path="add-subcategory" element={<CreateSubcategory/>} />
+
           </Route>
         </Routes>
       </BrowserRouter>

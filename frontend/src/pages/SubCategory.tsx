@@ -52,8 +52,13 @@ const SubcategoriesTable = () => {
 
   const handleDeleteConfirm = () => {
     if (!deleteId) return;
+    let token = localStorage.getItem('token')
     axios
-      .delete(`http://localhost:3000/subcategories/${deleteId}`)
+      .delete(`http://localhost:3000/subcategories/${deleteId}`,{
+        headers:{
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then(() => {
         setSubcategories(subcategories.filter((subcategory) => subcategory.id !== deleteId));
         setDeleteId(null);
@@ -92,7 +97,7 @@ const SubcategoriesTable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Subcategories</h2>
+      <div className="flex justify-between mb-2 "><h2 className="text-xl font-bold mb-4">Sub-Categories</h2>  <button className="text-white cursor-pointer bg-[#662671] rounded-md px-4" onClick={() => navigate("/add-subcategory")}>Add Sub-Categoty</button></div>
       <table className="min-w-full border-collapse border border-gray-300">
         <thead className="bg-[#FFF8B7]">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -118,8 +123,8 @@ const SubcategoriesTable = () => {
         </tbody>
       </table>
       {deleteId && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md">
+        <div className="fixed inset-0 flex items-center justify-center  bg-opacity-50">
+          <div className="bg-gray-300 p-6 rounded shadow-md">
             <p>Do you want to delete this record?</p>
             <div className="flex  gap-4 mt-4">
               <button onClick={() => setDeleteId(null)} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
